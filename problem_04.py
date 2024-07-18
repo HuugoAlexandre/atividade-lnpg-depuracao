@@ -7,10 +7,15 @@ class Account:
         self.balance += amount
 
     def withdraw(self, amount):
-        if amount <= self.balance:
+        if not isinstance(amount, int) and not isinstance(amount, float): # fix saque recebe apenas valores inteiros ou fracionários
+            return False
+        
+        if amount <= self.balance and amount >= 0: # fix : evitar saques sem sentido menores ou iguais a 0
             self.balance -= amount
+            return True # fix : retorna true caso o saque seja realizado com sucesso
         else:
             print("Insufficient funds")
+            return False # fix : retorna false caso o saque falhe
 
     def get_balance(self):
         return self.balance
@@ -47,8 +52,8 @@ class Bank:
         return None
 
     def transfer(self, from_account, to_account, amount):
-        from_account.withdraw(amount)  
-        to_account.deposit(amount)
+        if from_account.withdraw(amount):  # fix: condição necessária para averiguar possibilidade de saque
+            to_account.deposit(amount)
 
 
 def main():
@@ -72,7 +77,7 @@ def main():
     bob.add_account(bob_account)
 
     # Perform a transfer
-    my_bank.transfer(alice_account, bob_account, 300)
+    my_bank.transfer(alice_account, bob_account, 300.50)
 
     # Check balances
     print("Alice's balance:", alice_account.get_balance())
