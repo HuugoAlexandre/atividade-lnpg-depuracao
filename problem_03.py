@@ -16,7 +16,9 @@ def matrix_multiply(A, B):
     # Perform matrix multiplication
     for i in range(rows_A):
         for j in range(cols_B):
-            for k in range(cols_B): 
+            for k in range(cols_A): # fix: só é possível multiplicação entre matrizes se o número de
+                # colunas da matriz A = número de linhas da matriz B. Com a alteração feita,
+                # as dimensões serão respeitadas
                 result[i][j] += A[i][k] * B[k][j]
 
     return result
@@ -37,6 +39,7 @@ def read_matrix():
     except ValueError:
         print("Invalid input. Please enter integers only.")
         return None
+
 
 def main():
     print("Matrix A:")
